@@ -25,6 +25,12 @@
       min-width: 120px;
       display: inline-block;
     }
+    .update-time {
+      font-size: 0.9rem;
+      color: #6c757d;
+      text-align: center;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body class="p-4">
@@ -40,6 +46,7 @@
           <li class="list-group-item"><strong>Melbet :</strong> <span id="codeMelbet">Chargement...</span></li>
           <li class="list-group-item"><strong>1BetWinner :</strong> <span id="codeWinner">Chargement...</span></li>
         </ul>
+        <div class="update-time" id="updateTime">Dernière mise à jour : ...</div>
       </div>
     </div>
   </div>
@@ -58,6 +65,11 @@
       document.getElementById("code1xbet").textContent = content.codes["1xbet"] || "Aucun";
       document.getElementById("codeMelbet").textContent = content.codes["melbet"] || "Aucun";
       document.getElementById("codeWinner").textContent = content.codes["1betwinner"] || "Aucun";
+
+      // Affichage de la date de mise à jour (depuis JSONBin)
+      const date = new Date(data.metadata.updatedAt);
+      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+      document.getElementById("updateTime").textContent = "Dernière mise à jour : " + date.toLocaleDateString('fr-FR', options);
     })
     .catch(() => {
       alert("Erreur lors du chargement des données.");
