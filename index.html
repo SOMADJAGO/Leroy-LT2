@@ -2,27 +2,33 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Codes du jour</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
       background-color: #f8f9fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
     }
     .code-card {
-      max-width: 600px;
-      margin: auto;
+      width: 100%;
+      max-width: 700px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      border-radius: 12px;
+      border-radius: 15px;
       background-color: white;
+      overflow: hidden;
     }
     #topImage {
-      max-height: 300px;
+      max-height: 320px;
+      width: 100%;
       object-fit: cover;
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
     }
     .list-group-item strong {
-      min-width: 120px;
+      min-width: 130px;
       display: inline-block;
     }
     .update-time {
@@ -31,27 +37,43 @@
       text-align: center;
       margin-top: 10px;
     }
+    .share-button {
+      width: 100%;
+      margin-top: 20px;
+    }
   </style>
 </head>
-<body class="p-4">
-  <div class="container">
-    <div class="code-card">
-      <div class="text-center">
-        <img id="topImage" src="" alt="Image du jour" class="img-fluid w-100">
-      </div>
-      <div class="p-4">
-        <h4 class="mb-3 text-center">Codes disponibles</h4>
-        <ul class="list-group">
-          <li class="list-group-item"><strong>1xBet :</strong> <span id="code1xbet">Chargement...</span></li>
-          <li class="list-group-item"><strong>Melbet :</strong> <span id="codeMelbet">Chargement...</span></li>
-          <li class="list-group-item"><strong>1BetWinner :</strong> <span id="codeWinner">Chargement...</span></li>
-        </ul>
-        <div class="update-time" id="updateTime">Dernière mise à jour : ...</div>
-      </div>
+<body>
+  <div class="code-card">
+    <img id="topImage" src="" alt="Image du jour">
+    <div class="p-4">
+      <h4 class="mb-3 text-center">Codes disponibles</h4>
+      <ul class="list-group">
+        <li class="list-group-item"><strong>1xBet :</strong> <span id="code1xbet">Chargement...</span></li>
+        <li class="list-group-item"><strong>Melbet :</strong> <span id="codeMelbet">Chargement...</span></li>
+        <li class="list-group-item"><strong>Betwinner :</strong> <span id="codeWinner">Chargement...</span></li>
+      </ul>
+      <div class="update-time" id="updateTime">Dernière mise à jour : ...</div>
+      <button class="btn btn-primary share-button" onclick="sharePage()">Partager cette page</button>
     </div>
   </div>
 
   <script>
+    // Fonction pour partager la page via l'API Web Share
+    function sharePage() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Codes du jour',
+          url: window.location.href
+        }).catch((error) => {
+          console.log('Erreur lors du partage :', error);
+        });
+      } else {
+        alert('Votre navigateur ne supporte pas l\'API de partage.');
+      }
+    }
+
+    // Récupération des données de l'API
     fetch("https://api.jsonbin.io/v3/b/681e6b2f8960c979a5965b05/latest", {
       headers: {
         "X-Master-Key": "$2a$10$ECzsch031CIPF2dPbjNRruDYZyMcRRAEw7nRFrw0mOulZ0lndbYG6"
@@ -66,14 +88,21 @@
       document.getElementById("codeMelbet").textContent = content.codes["melbet"] || "Aucun";
       document.getElementById("codeWinner").textContent = content.codes["1betwinner"] || "Aucun";
 
-      // Affichage de la date de mise à jour (depuis JSONBin)
       const date = new Date(data.metadata.updatedAt);
-      const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-      document.getElementById("updateTime").textContent = "Dernière mise à jour : " + date.toLocaleDateString('fr-FR', options);
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+      document.getElementById("updateTime").textContent =
+        "Dernière mise à jour : " + date.toLocaleDateString('fr-FR', options);
     })
     .catch(() => {
       alert("Erreur lors du chargement des données.");
     });
   </script>
 </body>
-</html>
+  </html>
