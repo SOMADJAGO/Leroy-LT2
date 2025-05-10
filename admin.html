@@ -2,14 +2,20 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin - Modifier les codes</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
       background-color: #f8f9fa;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
     }
     .container {
-      max-width: 600px;
+      max-width: 800px;
       margin-top: 40px;
       padding: 30px;
       background-color: white;
@@ -28,6 +34,12 @@
     }
     #status {
       text-align: center;
+    }
+    .mb-4 {
+      margin-bottom: 1.5rem;
+    }
+    .mt-3 {
+      margin-top: 1rem;
     }
   </style>
 </head>
@@ -64,6 +76,9 @@
         <label class="form-label">Code 1BetWinner :</label>
         <input type="text" id="codeWinner" class="form-control mb-2" required>
 
+        <label class="form-label">Date de dernière mise à jour :</label>
+        <input type="text" id="manualUpdateTime" class="form-control mb-3" placeholder="Format: JJ/MM/YYYY HH:MM" required>
+
         <button type="submit" class="btn btn-success mt-3">Mettre à jour</button>
       </form>
 
@@ -96,6 +111,12 @@
       e.preventDefault();
       const imageFile = document.getElementById("imageInput").files[0];
       const reader = new FileReader();
+      const manualUpdateTime = document.getElementById("manualUpdateTime").value;
+
+      if (!manualUpdateTime) {
+        alert("Veuillez entrer une date de mise à jour valide.");
+        return;
+      }
 
       reader.onloadend = function () {
         const base64Image = reader.result.split(',')[1];
@@ -107,8 +128,6 @@
         .then(res => res.json())
         .then(imgData => {
           const imageUrl = imgData.data.url;
-          const now = new Date().toISOString();
-
           const data = {
             imageUrl: imageUrl,
             codes: {
@@ -116,7 +135,7 @@
               "melbet": document.getElementById("codeMelbet").value,
               "1betwinner": document.getElementById("codeWinner").value
             },
-            updatedAt: now
+            updatedAt: manualUpdateTime // Utilisation de la date manuelle
           };
 
           return fetch("https://api.jsonbin.io/v3/b/" + binId, {
@@ -131,7 +150,7 @@
         .then(() => {
           const status = document.getElementById("status");
           status.className = "alert alert-success";
-          status.textContent = "Mise à jour réussie avec la date.";
+          status.textContent = "Mise à jour réussie.";
           status.classList.remove("d-none");
         })
         .catch(() => {
@@ -146,4 +165,4 @@
     });
   </script>
 </body>
-</html>
+          </html>
