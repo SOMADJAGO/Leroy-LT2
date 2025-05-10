@@ -41,17 +41,27 @@
       width: 100%;
       margin-top: 20px;
     }
+    .promo-message {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
   <div class="code-card">
-    <img id="topImage" src="" alt="Image du jour">
     <div class="p-4">
+      <!-- Message d'encouragement à s'inscrire avec les codes promo -->
+      <div class="promo-message">
+        Inscrivez-vous dès maintenant et utilisez ces codes promo pour bénéficier des meilleures offres !
+      </div>
+      <img id="topImage" src="" alt="Image du jour">
       <h4 class="mb-3 text-center">Codes disponibles</h4>
       <ul class="list-group">
-        <li class="list-group-item"><strong>1xBet :</strong> <span id="code1xbet">Chargement...</span></li>
-        <li class="list-group-item"><strong>Melbet :</strong> <span id="codeMelbet">Chargement...</span></li>
-        <li class="list-group-item"><strong>Betwinner :</strong> <span id="codeWinner">Chargement...</span></li>
+        <li class="list-group-item"><strong>1xBet :</strong> <span id="code1xbet">LT2</span></li>
+        <li class="list-group-item"><strong>Melbet :</strong> <span id="codeMelbet">LT1</span></li>
+        <li class="list-group-item"><strong>Betwinner :</strong> <span id="codeWinner">LT1</span></li>
       </ul>
       <div class="update-time" id="updateTime">Dernière mise à jour : ...</div>
       <button class="btn btn-primary share-button" onclick="sharePage()">Partager cette page</button>
@@ -84,9 +94,9 @@
       const content = data.record;
 
       document.getElementById("topImage").src = content.imageUrl || "";
-      document.getElementById("code1xbet").textContent = content.codes["1xbet"] || "Aucun";
-      document.getElementById("codeMelbet").textContent = content.codes["melbet"] || "Aucun";
-      document.getElementById("codeWinner").textContent = content.codes["1betwinner"] || "Aucun";
+      document.getElementById("code1xbet").textContent = content.codes["1xbet"] || "LT2"; // Code par défaut
+      document.getElementById("codeMelbet").textContent = content.codes["melbet"] || "LT1"; // Code par défaut
+      document.getElementById("codeWinner").textContent = content.codes["1betwinner"] || "LT1"; // Code par défaut
 
       const date = new Date(data.metadata.updatedAt);
       const options = {
@@ -105,4 +115,4 @@
     });
   </script>
 </body>
-  </html>
+</html>
