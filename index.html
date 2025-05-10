@@ -27,10 +27,6 @@
       width: 100%;
       object-fit: cover;
     }
-    .list-group-item strong {
-      min-width: 130px;
-      display: inline-block;
-    }
     .update-time {
       font-size: 0.9rem;
       color: #6c757d;
@@ -63,23 +59,45 @@
     .whatsapp-button:hover {
       background-color: #128c7e;
     }
+    .promo-list {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f1f1f1;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
   <div class="code-card">
     <div class="p-4">
-      <!-- Message d'encouragement à s'inscrire avec les codes promo -->
+      <!-- Message de motivation -->
       <div class="promo-message">
         Inscrivez-vous dès maintenant et utilisez ces codes promo pour bénéficier des meilleures offres !
       </div>
+      
+      <!-- Image récupérée depuis le site Admin -->
       <img id="topImage" src="" alt="Image du jour">
-      <h4 class="mb-3 text-center">Codes disponibles</h4>
+      
+      <!-- Liste des codes du coupons disponibles récupérés depuis l'Admin -->
+      <h4 class="mb-3 text-center">Codes  du coupons disponibles</h4>
       <ul class="list-group">
-        <li class="list-group-item"><strong>1xBet ( Codre Promo: LT2
-          <li class="list-group-item"><strong>Melbet(Code Promo: LT1):
-        <li class="list-group-item"><strong>Betwinner(Code Promo LT1): </ul>
+        <li class="list-group-item"><strong>1xBet :</strong> <span id="code1xbet">Chargement...</span></li>
+        <li class="list-group-item"><strong>Melbet :</strong> <span id="codeMelbet">Chargement...</span></li>
+        <li class="list-group-item"><strong>Betwinner :</strong> <span id="codeWinner">Chargement...</span></li>
+      </ul>
+
       <div class="update-time" id="updateTime">Dernière mise à jour : ...</div>
       <button class="btn btn-primary share-button" onclick="sharePage()">Partager cette page</button>
+
+      <!-- Liste des codes promo statiques -->
+      <div class="promo-list">
+        <h5 class="text-center">Les codes promo :</h5>
+        <ul class="list-group">
+          <li class="list-group-item"><strong>1xBet :</strong> LT2</li>
+          <li class="list-group-item"><strong>Melbet :</strong> LT1</li>
+          <li class="list-group-item"><strong>Betwinner :</strong> LT1</li>
+        </ul>
+      </div>
 
       <!-- Section WhatsApp -->
       <div class="whatsapp-section">
@@ -114,11 +132,15 @@
     .then(data => {
       const content = data.record;
 
+      // Affichage de l'image
       document.getElementById("topImage").src = content.imageUrl || "";
-      document.getElementById("code1xbet").textContent = content.codes["1xbet"] || "LT2"; // Code par défaut
-      document.getElementById("codeMelbet").textContent = content.codes["melbet"] || "LT1"; // Code par défaut
-      document.getElementById("codeWinner").textContent = content.codes["1betwinner"] || "LT1"; // Code par défaut
 
+      // Affichage des codes promo dynamiques
+      document.getElementById("code1xbet").textContent = content.codes["1xbet"] || "Non disponible";
+      document.getElementById("codeMelbet").textContent = content.codes["melbet"] || "Non disponible";
+      document.getElementById("codeWinner").textContent = content.codes["1betwinner"] || "Non disponible";
+
+      // Mise à jour de la date
       const date = new Date(data.metadata.updatedAt);
       const options = {
         weekday: 'long',
